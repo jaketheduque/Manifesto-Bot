@@ -1,0 +1,5 @@
+# Project exclude paths
+/.idea/
+/target/
+/logs/
+/src/main/resources/application.properties
