@@ -1,8 +1,9 @@
 package me.jazzyjake.listeners;
 
+import me.jazzyjake.embeds.ExceptionEmbedBuilder;
+import me.jazzyjake.embeds.ManifestoBlacklistEmbedBuilder;
 import me.jazzyjake.main.ManifestoBotMain;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageHistory;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.sql.*;
-import java.util.jar.Manifest;
+import java.util.Arrays;
 
 public class ManifestoListener extends ListenerAdapter {
     private static final Logger log = LogManager.getLogger(ManifestoListener.class);
@@ -43,7 +44,6 @@ public class ManifestoListener extends ListenerAdapter {
             MessageHistory history = event.getChannel().getHistoryBefore(event.getMessageId(), 1).complete();
             Message manifesto = history.getRetrievedHistory().get(0);
 
-            // TODO Add check to prevent manifestos matching a blacklist
             if (event.getAuthor().getId().equals(manifesto.getAuthor().getId())) {
                 /*
                  * If the manifesto author id is the same as the manifestoer(?) id
@@ -60,6 +60,14 @@ public class ManifestoListener extends ListenerAdapter {
                 // Private message the BOT_MANIFESTO_EMBED to the user
                 PrivateChannel privateChannel = event.getAuthor().openPrivateChannel().complete();
                 privateChannel.sendMessage(BOT_MANIFESTO_EMBED).queue();
+            } else if (Arrays.asList(ManifestoBotMain.MANIFESTO_BLACKLIST).contains(manifesto.getContentStripped())) {
+                /*
+                 * If the manifesto is on the blacklist
+                 */
+
+                // Private message the MANIFESTO_ON_BLACKLIST to the user
+                PrivateChannel privateChannel = event.getAuthor().openPrivateChannel().complete();
+                privateChannel.sendMessage(new ManifestoBlacklistEmbedBuilder(manifesto.getContentStripped()).build()).queue();
             } else {
                 /*
                  * If the manifesto is valid
@@ -70,16 +78,16 @@ public class ManifestoListener extends ListenerAdapter {
                 // Create a connection to the derby database
                 try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
                     // Check for duplicate manifestos
-                    try (PreparedStatement dupeCheck = conn.prepareStatement("SELECT COUNT(*) AS DupeCount FROM manifestos WHERE manifesto=?")) {
+                    try (PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS DupeCount FROM manifestos WHERE manifesto=?")) {
                         // Set manifesto parameter
-                        dupeCheck.setString(1, manifestoContent);
+                        ps.setString(1, manifestoContent);
 
                         // Check dupes count
-                        try (ResultSet dupes = dupeCheck.executeQuery()) {
-                            dupes.next();
+                        try (ResultSet result = ps.executeQuery()) {
+                            result.next();
 
                             // If duplicates were found
-                            if (dupes.getInt("DupeCount") > 0) {
+                            if (result.getInt("DupeCount") > 0) {
                                 // Private message the DUPLICATE_MANIFESTO_EMBED to the user
                                 PrivateChannel privateChannel = event.getAuthor().openPrivateChannel().complete();
                                 privateChannel.sendMessage(DUPLICATE_MANIFESTO_EMBED).queue();
@@ -89,19 +97,19 @@ public class ManifestoListener extends ListenerAdapter {
                     }
 
                     // Prepare insert query
-                    try (PreparedStatement insertManifesto = conn.prepareStatement("INSERT INTO manifestos VALUES (DEFAULT, ?, ?)")) {
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO manifestos VALUES (DEFAULT, ?, ?)")) {
                         // Set parameters
-                        insertManifesto.setString(1, manifestoContent);
-                        insertManifesto.setString(2, event.getAuthor().getAsTag());
+                        ps.setString(1, manifestoContent);
+                        ps.setString(2, event.getAuthor().getAsTag());
 
                         // Execute query
-                        insertManifesto.executeUpdate();
+                        ps.executeUpdate();
                     }
 
                     // Logs the manifesto addition
                     log.info("Manifesto added to database by {}: {}", event.getAuthor().getAsTag(), manifestoContent);
                 } catch (SQLException e) {
-                    // TODO Log exception here(?)
+                    event.getChannel().sendMessage(new ExceptionEmbedBuilder(e).build());
                     e.printStackTrace();
                 }
             }
