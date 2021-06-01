@@ -1,5 +1,13 @@
 # Project exclude paths
 /.idea/
 /target/
+
+# Exclude logs
 /logs/
+
+# Exclude properties file (IMPORTANT: Contains token)
 /src/main/resources/application.properties
+
+# Exclude database files
+/ManifestoDB/
+/derby.log
