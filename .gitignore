@@ -5,7 +5,7 @@
 # Exclude logs
 /logs/
 
-# Exclude properties file (IMPORTANT: Contains token)
+# Exclude properties file (IMPORTANT)
 /src/main/resources/application.properties
 
 # Exclude database files
