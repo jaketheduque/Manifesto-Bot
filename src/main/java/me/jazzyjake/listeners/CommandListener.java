@@ -38,14 +38,14 @@ public class CommandListener extends ListenerAdapter {
                         try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
                             // Retrieves a random manifesto
                             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM manifestos ORDER BY RANDOM() {LIMIT 1}")) {
-                                try (ResultSet randomManifesto = ps.executeQuery()) {
-                                    randomManifesto.next();
+                                try (ResultSet result = ps.executeQuery()) {
+                                    result.next();
 
                                     // Creates an embed with the manifesto and then a message with the embed as the content
                                     MessageEmbed embed = new EmbedBuilder()
                                             .setTitle("Retrieved Manifesto:")
-                                            .setDescription(randomManifesto.getString("manifesto"))
-                                            .addField("Added to manifesto list by:", randomManifesto.getString("manifestoer"), false)
+                                            .setDescription(result.getString("manifesto"))
+                                            .addField("Added to manifesto list by:", result.getString("manifestoer"), false)
                                             .setColor(Color.GRAY)
                                             .build();
                                     Message randomManifestoMessage = new MessageBuilder()
