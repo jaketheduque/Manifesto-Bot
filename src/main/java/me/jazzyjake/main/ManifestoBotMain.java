@@ -3,6 +3,7 @@ package me.jazzyjake.main;
 
 import me.jazzyjake.listeners.CommandListener;
 import me.jazzyjake.listeners.ManifestoListener;
+import me.jazzyjake.listeners.ManifestoReactionListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.apache.logging.log4j.LogManager;
@@ -13,12 +14,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ManifestoBotMain {
     // application.properties constants
     public static final ResourceBundle properties = ResourceBundle.getBundle("application");
     public static final int DELETE_REACTION_LIMIT = Integer.parseInt(properties.getString("delete-reaction-limit"));
+    public static final String[] MANIFESTO_BLACKLIST = properties.getString("manifesto-blacklist").split(",");
     private static final String TOKEN = properties.getString("token");
 
     // Manifesto database constants
@@ -29,11 +32,13 @@ public class ManifestoBotMain {
     private static final Logger log = LogManager.getLogger(ManifestoBotMain.class);
 
     public static void main(String[] args) {
+        log.info("Current manifesto blacklist: {}", Arrays.toString(MANIFESTO_BLACKLIST));
+
         // Creates the JDA bot and builds it
         try {
             jda = JDABuilder
                     .createDefault(TOKEN)
-                    .addEventListeners(new ManifestoListener(), new CommandListener())
+                    .addEventListeners(new ManifestoListener(), new CommandListener(), new ManifestoReactionListener())
                     .build();
         } catch (LoginException e) {
             log.error("Login exception occurred!");
