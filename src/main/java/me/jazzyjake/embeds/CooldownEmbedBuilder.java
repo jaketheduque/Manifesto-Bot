@@ -5,10 +5,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 
-public class ManifestoBlacklistEmbedBuilder extends EmbedBuilder {
-    public ManifestoBlacklistEmbedBuilder(String manifesto) {
-        this.setTitle("Manifesto Not Added!");
-        this.setDescription("`" + manifesto + "` is on manifesto blacklist");
+public class CooldownEmbedBuilder extends EmbedBuilder {
+    public CooldownEmbedBuilder(int secondsLeft) {
+        this.setTitle("Please wait!");
+        this.setDescription("Bot is on cooldown for **" + secondsLeft + "** more seconds");
         this.setColor(Color.RED);
     }
 

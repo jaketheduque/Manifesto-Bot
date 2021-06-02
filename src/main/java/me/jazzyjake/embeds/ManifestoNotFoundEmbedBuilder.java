@@ -5,10 +5,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 
-public class ManifestoBlacklistEmbedBuilder extends EmbedBuilder {
-    public ManifestoBlacklistEmbedBuilder(String manifesto) {
-        this.setTitle("Manifesto Not Added!");
-        this.setDescription("`" + manifesto + "` is on manifesto blacklist");
+public class ManifestoNotFoundEmbedBuilder extends EmbedBuilder {
+    public ManifestoNotFoundEmbedBuilder(int id) {
+        this.setTitle("Manifesto Not Found!");
+        this.setDescription("Manifesto with id `" + id + "` was not found");
         this.setColor(Color.RED);
     }
 
