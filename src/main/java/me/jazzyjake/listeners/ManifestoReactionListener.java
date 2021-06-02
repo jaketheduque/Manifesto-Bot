@@ -36,6 +36,9 @@ public class ManifestoReactionListener extends ListenerAdapter {
                         // Gets the content of the message (Used to remove the manifesto from the database)
                         String manifesto = eventMessage.getEmbeds().get(0).getDescription();
 
+                        // Removes the ` (code block annotation) from the beginning and end
+                        manifesto = manifesto.substring(1, manifesto.length() - 1);
+
                         // Deletes the message
                         eventMessage.delete().queue();
 
