@@ -8,7 +8,7 @@ import java.awt.*;
 public class ManifestoEmbedBuilder extends EmbedBuilder {
     public ManifestoEmbedBuilder(String manifesto, String manifestoer) {
         this.setTitle("Retrieved Manifesto:");
-        this.setDescription("`" + manifesto + "`");
+        this.setDescription(manifesto);
         this.addField("Added to manifesto list by:", manifestoer, false);
         this.setColor(Color.GRAY);
     }
