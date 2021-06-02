@@ -12,8 +12,4 @@ public class ManifestoEmbedBuilder extends EmbedBuilder {
         this.addField("Added to manifesto list by:", manifestoer, false);
         this.setColor(Color.GRAY);
     }
-
-    public MessageEmbed build() {
-        return super.build();
-    }
 }

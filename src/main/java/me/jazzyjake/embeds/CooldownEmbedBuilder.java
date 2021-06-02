@@ -11,8 +11,4 @@ public class CooldownEmbedBuilder extends EmbedBuilder {
         this.setDescription("Bot is on cooldown for **" + secondsLeft + "** more seconds");
         this.setColor(Color.RED);
     }
-
-    public MessageEmbed build() {
-        return super.build();
-    }
 }

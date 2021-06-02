@@ -11,8 +11,4 @@ public class ManifestoNotFoundEmbedBuilder extends EmbedBuilder {
         this.setDescription("Manifesto with id `" + id + "` was not found");
         this.setColor(Color.RED);
     }
-
-    public MessageEmbed build() {
-        return super.build();
-    }
 }

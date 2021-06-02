@@ -11,8 +11,4 @@ public class ManifestoBlacklistEmbedBuilder extends EmbedBuilder {
         this.setDescription("`" + manifesto + "` is on manifesto blacklist");
         this.setColor(Color.RED);
     }
-
-    public MessageEmbed build() {
-        return super.build();
-    }
 }

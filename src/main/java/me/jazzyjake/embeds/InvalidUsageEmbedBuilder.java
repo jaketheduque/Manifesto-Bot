@@ -25,8 +25,4 @@ public class InvalidUsageEmbedBuilder extends EmbedBuilder {
         this.setDescription(sb.toString());
         this.setColor(Color.RED);
     }
-
-    public MessageEmbed build() {
-        return super.build();
-    }
 }
