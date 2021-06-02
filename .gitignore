@@ -4,10 +4,3 @@
 
 # Exclude logs
 /logs/
-
-# Exclude properties file (IMPORTANT)
-/src/main/resources/application.properties
-
-# Exclude database files
-/ManifestoDB/
-/derby.log
