@@ -76,7 +76,7 @@ public class ManifestoListener extends ListenerAdapter {
                 String manifestoContent = manifesto.getContentRaw();
 
                 // Create a connection to the derby database
-                try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
+                try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DATABASE_URL)) {
                     // Check for duplicate manifestos
                     try (PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS DupeCount FROM manifestos WHERE manifesto=?")) {
                         // Set manifesto parameter

@@ -11,10 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
@@ -28,9 +24,12 @@ public class ManifestoBotMain {
     public static final String[] MANIFESTO_BLACKLIST = properties.getString("manifesto-blacklist").split(",");
     private static final String TOKEN = properties.getString("token");
 
-    // Manifesto database constants
-    public static final String DERBY_NAME = "ManifestoDB";
-    public static final String DERBY_PROTOCOL = "jdbc:derby:";
+    // Postgres database constants
+    public static final String DATABASE_URL = System.getenv("JDBC_DATABASE_URL");
+
+//    Apache Derby database constants
+//    public static final String DERBY_NAME = "ManifestoDB";
+//    public static final String DERBY_PROTOCOL = "jdbc:derby:";
 
     private static JDA jda;
     private static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();

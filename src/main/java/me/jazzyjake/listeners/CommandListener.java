@@ -48,9 +48,9 @@ public class CommandListener extends ListenerAdapter {
                 case "!randommanifesto":
                     if (!onHold) {
                         // Gets a connection to the database
-                        try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
+                        try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DATABASE_URL)) {
                             // Retrieves a random manifesto
-                            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM manifestos ORDER BY RANDOM() {LIMIT 1}")) {
+                            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM manifestos ORDER BY RANDOM() LIMIT 1")) {
                                 try (ResultSet result = ps.executeQuery()) {
                                     result.next();
 
@@ -95,7 +95,7 @@ public class CommandListener extends ListenerAdapter {
                     } else {
                         if (!onHold) {
                             // Gets a connection to the database
-                            try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
+                            try (Connection conn = DriverManager.getConnection(ManifestoBotMain.DATABASE_URL)) {
                                 // Retrieves the requested manifesto
                                 try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM manifestos WHERE id=?")) {
                                     // Checks if the 2nd parameter is a valid number

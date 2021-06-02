@@ -3,9 +3,7 @@ package me.jazzyjake.listeners;
 import me.jazzyjake.embeds.ExceptionEmbedBuilder;
 import me.jazzyjake.main.ManifestoBotMain;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +13,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.stream.Stream;
 
 public class ManifestoReactionListener extends ListenerAdapter {
     private static final Logger log = LogManager.getLogger(ManifestoReactionListener.class);
@@ -43,7 +40,7 @@ public class ManifestoReactionListener extends ListenerAdapter {
                         eventMessage.delete().queue();
 
                         // Deletes the manifesto from the database
-                        try (Connection con = DriverManager.getConnection(ManifestoBotMain.DERBY_PROTOCOL + ManifestoBotMain.DERBY_NAME)) {
+                        try (Connection con = DriverManager.getConnection(ManifestoBotMain.DATABASE_URL)) {
                             try (PreparedStatement ps = con.prepareStatement("DELETE FROM manifestos WHERE manifesto=?")) {
                                 ps.setString(1, manifesto);
 
