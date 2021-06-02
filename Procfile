@@ -1,0 +1,1 @@
+bot: java -jar target/Manifesto-Bot-1.0-jar-with-dependencies.jar
