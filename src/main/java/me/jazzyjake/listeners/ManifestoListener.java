@@ -97,7 +97,7 @@ public class ManifestoListener extends ListenerAdapter {
                     }
 
                     // Prepare insert query
-                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO manifestos VALUES (DEFAULT, ?, ?)")) {
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO manifestos (manifesto, manifestoer) VALUES (?, ?)")) {
                         // Set parameters
                         ps.setString(1, manifestoContent);
                         ps.setString(2, event.getAuthor().getAsTag());
@@ -107,7 +107,7 @@ public class ManifestoListener extends ListenerAdapter {
                     }
 
                     // Logs the manifesto addition
-                    log.info("Manifesto added to database by {}: {}", event.getAuthor().getAsTag(), manifestoContent);
+                    log.info("Manifesto added to database by {}: \"{}\"", event.getAuthor().getAsTag(), manifestoContent.length() > 50 ? manifestoContent.substring(0, 50) + "..." : manifestoContent);
                 } catch (SQLException e) {
                     event.getChannel().sendMessage(new ExceptionEmbedBuilder(e).build());
                     e.printStackTrace();
