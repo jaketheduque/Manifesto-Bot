@@ -2,5 +2,7 @@
 /.idea/
 /target/
 
-# Exclude logs
-/logs/
+# Exclude custom files
+/src/main/resources/application.properties
+/Procfile
+/system.properties
