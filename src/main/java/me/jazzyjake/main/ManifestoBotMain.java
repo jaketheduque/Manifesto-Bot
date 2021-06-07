@@ -52,8 +52,7 @@ public class ManifestoBotMain {
                 if (jda.getPresence().getActivity() == null || jda.getPresence().getActivity().getType() == Activity.ActivityType.WATCHING) {
                     jda.getPresence().setPresence(Activity.listening("!manifestohelp"), false);
                 } else {
-                    // TODO Change this to actual website
-                    jda.getPresence().setPresence(Activity.watching("jazzyjake.ddns.net"), false);
+                    jda.getPresence().setPresence(Activity.watching("https://rso-manifesto-website.herokuapp.com/"), false);
                 }
             }, 0, 1, TimeUnit.MINUTES);
 
